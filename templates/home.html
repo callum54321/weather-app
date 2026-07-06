@@ -1,48 +1,54 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage - Weather Buddy</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body
-    class="flex flex-col items-center min-w-screen min-h-screen p-4 gap-10 bg-[#e3fcfc]"
-  >
-    <div class="flex flex-col items-center p-4">
-      <h1 class="font-bold text-4xl">Thunder Buddy</h1>
-      <p class="italic">Your Weather Pal</p>
-    </div>
-    <!-- Search form -->
-    <form
-      method="GET"
-      action="/weather"
-      class="flex flex-col w-full max-w-4xl h-fit bg-white p-6 rounded-lg shadow-md gap-4"
+  <body class="min-h-screen bg-cover bg-center bg-fixed">
+    <div
+      class="flex flex-col items-center min-h-screen bg-black/50 px-4 py-10 gap-8"
     >
-      <div class="flex flex-col gap-2">
-        <label for="city-choice" class="text-sm font-semibold text-gray-700">
-          Choose a city:
-        </label>
-
-        <!-- Input Box -->
-        <input
-          list="cities"
-          name="citysearch"
-          placeholder="Type to search..."
-          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-        />
+      <div class="flex flex-col items-center p-4 text-white italic">
+        <h1 class="font-bold text-6xl">Weather Buddy</h1>
       </div>
-
-      <datalist id="cities">
-        {% for city in cities %}
-        <option value="{{ city }}"></option>
-        {% endfor %}
-      </datalist>
-
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out"
+      <!-- Search form -->
+      <form
+        method="GET"
+        action="/weather"
+        class="w-full max-w-4xl bg-white/15 backdrop-blur-md rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl text-white"
       >
-        Go
-      </button>
-    </form>
+        <div class="flex flex-col gap-2">
+          <label for="city-choice" class="text-sm font-semibold text-gray-700">
+            Choose a city:
+          </label>
+
+          <!-- Input Box -->
+          <input
+            list="cities"
+            name="citysearch"
+            placeholder="Type to search..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+          />
+        </div>
+
+        <datalist id="cities">
+          {% for city in cities %}
+          <option value="{{ city }}"></option>
+          {% endfor %}
+        </datalist>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out"
+        >
+          Go
+        </button>
+      </form>
+
+      <!-- Saved Locations Cards -->
+    </div>
   </body>
 </html>
