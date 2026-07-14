@@ -6,7 +6,10 @@
     <title>Homepage - Weather Buddy</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="min-h-screen bg-cover bg-center bg-fixed">
+  <body
+    style="background-image: url('{{ url_for('static', filename='images/sky.png') }}')"
+    class="min-h-screen bg-cover bg-center bg-fixed"
+  >
     <div
       class="flex flex-col items-center min-h-screen bg-black/50 px-4 py-10 gap-8"
     >
@@ -17,10 +20,10 @@
       <form
         method="GET"
         action="/weather"
-        class="w-full max-w-4xl bg-white/15 backdrop-blur-md rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl text-white"
+        class="flex flex-col items-center w-full max-w-6xl bg-white/15 rounded-xl p-8 justify-between gap-4 shadow-lg backdrop-blur-md text-white"
       >
-        <div class="flex flex-col gap-2">
-          <label for="city-choice" class="text-sm font-semibold text-gray-700">
+        <div class="flex flex-col gap-2 w-full">
+          <label for="city-choice" class="text-sm font-semibold text-white">
             Choose a city:
           </label>
 
@@ -42,13 +45,66 @@
         <!-- Submit Button -->
         <button
           type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out"
+          class="w-full bg-blue-600 hover:bg-blue-900 text-white font-medium py-2 px-4 rounded-md transition ease-in-out duration:300"
         >
           Go
         </button>
       </form>
 
+      <!-- Section Title -->
+      <div class="flex justify-start w-full max-w-6xl py-2 px-0">
+        <h1 class="flex text-white font-semibold text-2xl">
+          My Saved Locations
+        </h1>
+      </div>
+
       <!-- Saved Locations Cards -->
+      <div class="flex flex-col items-center w-full gap-4 px-4">
+        {% for location in saved_locations %}
+        <a
+          href="/weather?citysearch={{ location.cityname }}"
+          class="block w-full max-w-4xl"
+        >
+          <div
+            class="flex shadow-md w-full h-fit py-4 px-2 rounded-xl bg-white/15 backdrop-blur-md hover:bg-white/10 cursor-pointer transition-transform duration-300 hover:scale-105"
+          >
+            <!-- Left Container -->
+            <div class="flex flex-col justify-start w-full px-4 text-white">
+              {% if location.is_default == True %}
+              <h1 class="text-xl font-semibold">Current Location</h1>
+              <h2 class="text-md">{{ location.cityname }}</h2>
+              {% else %}
+              <h1 class="text-xl font-semibold">{{ location.cityname }}</h1>
+              {% endif %}
+              <h3 class="pt-6 capitalize">{{ location.description }}</h3>
+            </div>
+            <!-- Right Container -->
+            <div class="flex flex-col items-center w-full text-white">
+              <h1 class="text-5xl font-bold">{{ location.temp }}°</h1>
+              <div
+                class="flex flex-row items-center justify-between gap-3 pt-6"
+              >
+                <h2>H: {{ location.temp_max }}°</h2>
+                <h2>L: {{ location.temp_min }}°</h2>
+              </div>
+            </div>
+            <!-- Delete Button -->
+            <form
+              action="{{ url_for('delete', id=location.id) }}"
+              method="POST"
+              class="mt-8"
+            >
+              <button
+                type="submit"
+                class="bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-xl shadow-md backdrop-blur-md transition duration-200 ease-in-out border border-white/20"
+              >
+                Delete
+              </button>
+            </form>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
     </div>
   </body>
 </html>

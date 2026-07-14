@@ -3,7 +3,7 @@ import os
 import sys
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 import csv
 import geocoder
@@ -159,9 +159,13 @@ def weather():
 
     return render_template("weather.html", forecast=data, city=cityname)
 
-@app.route("/save")
+@app.route("/save", methods=["POST"])
 def save_location():
     cityname = request.form.get("cityname")
+
+    if not cityname:
+        return redirect("/")
+
     lat, lon = get_geolocation(cityname)
 
     existing = SavedLocations.query.filter_by(cityname=cityname).first()
@@ -172,7 +176,7 @@ def save_location():
     
     return redirect("/")
 
-@app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>", methods=["POST"])
 def delete(id):
     location = SavedLocations.query.get_or_404(id)
     db.session.delete(location)

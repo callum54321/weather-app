@@ -6,5 +6,112 @@
     <title>{{ city }} - 5 Day Forecast</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="min-h-screen bg-cover bg-center bg-fixed"></body>
+  <body
+    class="min-h-screen bg-cover bg-center bg-fixed"
+    style="background-image: url('{{ url_for('static', filename='images/sky.png') }}')"
+  >
+    <div
+      class="flex flex-col items-center min-h-screen bg-black/50 px-4 py-10 gap-8"
+    >
+      <!-- Back Button -->
+      <div class="">
+        <a href="{{ url_for('root') }}">
+          <button
+            type="back-button"
+            class="bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-xl shadow-md backdrop-blur-md transition duration-200 ease-in-out border border-white/20"
+          >
+            Back
+          </button>
+        </a>
+      </div>
+      <!-- Hero Card -->
+      {% set hero = forecast[0] %}
+      <div
+        class="flex flex-row grid-cols-2 w-full max-w-6xl h-fit rounded-xl py-12 px-8 bg-white/15 shadow-xl backdrop-blur-md mt-12"
+      >
+        <!-- Left Container -->
+        <div class="flex flex-col w-full text-white justify-between gap-4">
+          <p
+            class="justify-start font-semibold text-sm uppercase text-white/60 mt-18"
+          >
+            Current Weather
+          </p>
+          <h1 class="font-bold text-9xl">{{ city }}</h1>
+          <p class="text-xl capitalize">{{ hero.description }}</p>
+          <h2 class="font-semibold text-lg mt-6 text-white/60">
+            {{ hero.date }}
+          </h2>
+        </div>
+        <!-- Right Container -->
+        <div
+          class="flex flex-col items-center h-6xl w-full text-white my-auto mt-18"
+        >
+          <h1 class="font-thin text-9xl">{{ hero.temp }}°</h1>
+        </div>
+      </div>
+
+      <!-- Stats Container -->
+      <div
+        class="flex flex-row grid-cols-4 items-center w-full max-w-6xl h-fit rounded-xl py-8 px-8 bg-white/15 shadow-xl backdrop-blur-md mt-4 text-white"
+      >
+        <div class="flex flex-col items-center gap-4 w-full">
+          <p class="text-lg text-white/60 uppercase">High</p>
+          <p class="text-4xl">{{ hero.temp_max }}°</p>
+        </div>
+        <div class="flex flex-col items-center gap-4 w-full">
+          <p class="text-lg text-white/60 uppercase">Low</p>
+          <p class="text-4xl">{{ hero.temp_min }}°</p>
+        </div>
+        <div class="flex flex-col items-center gap-4 w-full">
+          <p class="text-lg text-white/60 uppercase">Humidity</p>
+          <p class="text-4xl">{{ hero.humidity }}%</p>
+        </div>
+        <div class="flex flex-col items-center gap-4 w-full">
+          <p class="text-lg text-white/60 uppercase">Chance of Rain</p>
+          <p class="text-4xl">{{ hero.chance_of_rain }}%</p>
+        </div>
+      </div>
+
+      <!-- Day Forecast -->
+      <div class="w-full max-w-6xl text-white">
+        <h2 class="text-sm uppercase text-white/60 mb-4">5-Day Forecast</h2>
+        <div class="grid grid-cols-5 gap-4">
+          {% for day in forecast %}
+          <div
+            class="bg-white/15 backdrop-blur-md rounded-xl p-4 flex flex-col items-center gap-2 shadow"
+          >
+            <p class="text-xs font-semibold uppercase text-white/70">
+              {{ day.date }}
+            </p>
+            <p class="text-4xl font-light">{{ day.temp }}°</p>
+            <p class="text-xs text-center capitalize text-white/70">
+              {{ day.description }}
+            </p>
+            <div
+              class="w-full border-t border-white/20 pt-2 flex justify-between text-xs text-white/60"
+            >
+              <span>H {{ day.temp_max }}°</span>
+              <span>L {{ day.temp_min }}°</span>
+            </div>
+            <div class="flex justify-between w-full text-xs text-white/60">
+              <span>{{ day.humidity }}% Humidity</span>
+              <span>{{ day.chance_of_rain }}% Rain</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <form action="/save" method="POST" class="mt-8">
+        <input type="hidden" name="cityname" value="{{ city }}" />
+        <button
+          type="submit"
+          class="bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-6 rounded-xl shadow-md backdrop-blur-md transition duration-200 ease-in-out border border-white/20"
+        >
+          Save Location
+        </button>
+      </form>
+    </div>
+  </body>
 </html>
